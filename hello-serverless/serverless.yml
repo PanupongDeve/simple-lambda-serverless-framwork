@@ -8,10 +8,13 @@ custom:
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
+  serverless-offline:
+    host: 0.0.0.0
 
 # Add the serverless-webpack plugin
 plugins:
   - serverless-webpack
+  - serverless-offline
 
 provider:
   name: aws
@@ -27,7 +30,19 @@ provider:
 functions:
   hello:
     handler: handler.hello
+    memorySize: 128
+    timeout: 3
     events:
       - http:
           method: get
           path: hello
+  
+  add:
+    handler: add.add
+    memorySize: 256
+    timeout: 10
+    events:
+      - http:
+          path: math/add
+          method: post
+          cors: true
