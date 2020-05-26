@@ -29,16 +29,22 @@ provider:
 
 functions:
   hello:
-    handler: handler.hello
+    handler: api/handler.hello
     memorySize: 128
     timeout: 3
     events:
       - http:
-          method: get
-          path: hello
+          method: ANY
+          path: /
+          cors: true
+
+      - http:
+          method: ANY
+          path: /{proxy+}
+          cors: true
   
   add:
-    handler: add.add
+    handler: api/add.add
     memorySize: 256
     timeout: 10
     events:
@@ -46,3 +52,45 @@ functions:
           path: math/add
           method: post
           cors: true
+
+  restCreate:
+    handler: api/simple-restful.create
+    events:
+      - http:
+          method: post
+          path: /simple-restful/create
+          cors: true
+
+  restUpdate:
+    handler: api/simple-restful.update
+    events:
+      - http:
+          method: patch
+          path: /simple-restful/update/{id}
+          cors: true
+
+  restDelete:
+    handler: api/simple-restful.remove
+    events:
+      - http:
+          method: delete
+          path: /simple-restful/remove/{id}
+          cors: true
+
+  restGetById:
+    handler: api/simple-restful.getById
+    events:
+      - http:
+          method: get
+          path: /simple-restful/{id}
+          cors: true
+
+
+  restGetAll:
+    handler: api/simple-restful.getAll
+    events:
+      - http:
+          method: get
+          path: /simple-restful
+          cors: true
+  
