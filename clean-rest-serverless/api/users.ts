@@ -47,10 +47,11 @@ export const update: APIGatewayProxyHandler = async (event, _context) => {
 
 export const remove: APIGatewayProxyHandler = async (event, _context) => {
    const { id }  = event.pathParameters;
-
+   const users: User[] = await userController.removeById(id);
     const output = {
         message: 'I am Delete',
-        id
+        id,
+        users
       }
 
       console.log(output);

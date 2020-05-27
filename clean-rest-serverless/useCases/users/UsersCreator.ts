@@ -4,8 +4,8 @@ import { UserManger, UserMangerImp } from '../../entities/users/UserManger';
 interface UsersCreator {
     userManger: UserManger;
     createUser(user: any): Promise<User[]>;
-    updateUser(id, user: any): Promise<User[]>;
-    // deleteUser(id, user: any): Promise<User[]>;
+    updateUser(id: String, user: any): Promise<User[]>;
+    deleteUser(id: String): Promise<User[]>;
 
 }
 
@@ -26,8 +26,13 @@ class UsersCreatorImp {
         return users;
     }
 
-    public async updateUser(id, user: any): Promise<User[]> {
+    public async updateUser(id: String, user: any): Promise<User[]> {
         const users: User[] = this.userManger.updateByidFromMock(id, user);
+        return users;
+    }
+
+    public async deleteUser(id: String): Promise<User[]> {
+        const users: User[] = this.userManger.deleteByidFromMock(id);
         return users;
     }
 }

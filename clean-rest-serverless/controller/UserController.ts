@@ -36,8 +36,9 @@ class UserController {
         return users;
     }
 
-    async removeById() {
-
+    async removeById(id: String) {
+        const users: User[] = await usersCreator.deleteUser(id);
+        return users;
     }
 
 }

@@ -8,7 +8,7 @@ interface UserManger {
     getUsersFromMock(): User[];
     getUserByIdFromMock(id: String): User;
     updateByidFromMock(id: String, user: any): User[];
-    // deleteByidFromMock(id: string): User;
+    deleteByidFromMock(id: String): User[];
 
     autoGenerateIdFromMock(): Number;
     filterUsersById(id: String, users: User[]): User;
@@ -80,6 +80,23 @@ class UserMangerImp implements UserManger {
         })
 
         return usersUpdated;
+    }
+
+    public deleteByidFromMock(id: String): User[] {
+        const users: User[] =  this.mappingFromDataSourceToUsers(usersMock);
+
+        let userUpdated: User[] = users.map((user) => {
+            if (Number(user.id) === Number(id)) {
+                const indexId = Number(id);
+                usersMock[indexId] = null;
+                user = null;
+                return user;
+            } else {
+                return user;
+            }
+        });
+
+        return userUpdated;
     }
 
     public mappingFromDataSourceToUsers(users: any[]): User[] {
