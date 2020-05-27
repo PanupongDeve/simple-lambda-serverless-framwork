@@ -1,0 +1,68 @@
+service:
+  name: rest-serverless
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+  serverless-offline:
+    host: 0.0.0.0
+
+# Add the serverless-webpack plugin
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ap-southeast-1
+  apiGateway:
+    minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+
+functions:
+  usersCreate:
+    handler: api/users.create
+    events:
+      - http:
+          method: post
+          path: /users/create
+          cors: true
+
+  usersUpdate:
+    handler: api/users.update
+    events:
+      - http:
+          method: patch
+          path: /users/update/{id}
+          cors: true
+
+  usersDelete:
+    handler: api/users.remove
+    events:
+      - http:
+          method: delete
+          path: /users/remove/{id}
+          cors: true
+
+  usersGetById:
+    handler: api/users.getById
+    events:
+      - http:
+          method: get
+          path: /users/{id}
+          cors: true
+
+
+  usersGetAll:
+    handler: api/users.getAll
+    events:
+      - http:
+          method: get
+          path: /users
+          cors: true
