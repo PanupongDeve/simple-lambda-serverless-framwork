@@ -1,8 +1,7 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import 'source-map-support/register';
 
-import { usersPresenter } from '../useCases/users/UsersPresenter';
-import { usersCreator } from '../useCases/users/UsersCreator';
+import { userController } from '../controller/UserController';
 import { User } from '../entities/users/User';
 
 export const create: APIGatewayProxyHandler = async (event, _context) => {
@@ -11,7 +10,7 @@ export const create: APIGatewayProxyHandler = async (event, _context) => {
     const user: any = JSON.parse(event.body);
    
 
-    const users: User[] = await usersCreator.createUser(user);
+    const users: User[] = await userController.create(user);
     
     const output = {
         message: 'I am Create',
@@ -62,7 +61,7 @@ export const getById: APIGatewayProxyHandler = async (event, _context) => {
 
     const { id }  = event.pathParameters;
     
-    const user: User = await usersPresenter.getUserById(id);
+    const user: User = await userController.getById(id);
 
     const output = {
         message: 'I am GetById',
@@ -79,7 +78,7 @@ export const getById: APIGatewayProxyHandler = async (event, _context) => {
 
 
 export const getAll: APIGatewayProxyHandler = async (event, _context) => {
-    const users: User[] = await usersPresenter.getUsers();
+    const users: User[] = await userController.getAll();
 
     const output = {
         message: 'I am GetAll',
