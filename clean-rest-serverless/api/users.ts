@@ -27,10 +27,14 @@ export const create: APIGatewayProxyHandler = async (event, _context) => {
 
 export const update: APIGatewayProxyHandler = async (event, _context) => {
     const { id }  = event.pathParameters;
+    const user: any = JSON.parse(event.body);
+
+    const users: User[] = await userController.updateById(id, user);
 
     const output = {
         message: 'I am Update',
-        id
+        id,
+        users
       }
 
       console.log(output);

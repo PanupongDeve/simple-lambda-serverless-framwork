@@ -30,8 +30,10 @@ class UserController {
         return users;
     }
 
-    async updateById() {
+    async updateById(id: String, user: any) {
+        const users: User[] = await usersCreator.updateUser(id, user);
 
+        return users;
     }
 
     async removeById() {

@@ -7,7 +7,7 @@ interface UserManger {
     createUserToMock(user: any): User[];
     getUsersFromMock(): User[];
     getUserByIdFromMock(id: String): User;
-    // updateByidFromMock(id: string, data: any): User;
+    updateByidFromMock(id: String, user: any): User[];
     // deleteByidFromMock(id: string): User;
 
     autoGenerateIdFromMock(): Number;
@@ -21,6 +21,7 @@ interface UserManger {
 
     mappingFromDataSourceToUsers(users: any[]): User[];
     mappingFromHttpBodytoUser(user: any): User;
+    updateUserMockAttribute(user: User, userUpdated: User): User;
 
 }
 
@@ -64,6 +65,23 @@ class UserMangerImp implements UserManger {
         return users;
     }
 
+    public updateByidFromMock(id: String, user: any): User[] {
+        const userMapped: User = this.mappingFromHttpBodytoUser(user);
+        const users: User[] =  this.mappingFromDataSourceToUsers(usersMock);
+
+        let usersUpdated: User[] = users.map((user) => {
+            if (Number(user.id) === Number(id)) {
+                const indexId = Number(id);
+                let userUpdated:User = this.updateUserMockAttribute(users[indexId], userMapped);
+                return userUpdated;
+            } else {
+                return user;
+            }
+        })
+
+        return usersUpdated;
+    }
+
     public mappingFromDataSourceToUsers(users: any[]): User[] {
         const mappedUsers: User[] = users.map((user) => {
             return new UserImp(user);
@@ -86,6 +104,13 @@ class UserMangerImp implements UserManger {
     public filterUsersById(id: String, users: User[]): User {
         const handleFilteruserById = (user) => Number(user.id) === Number(id);
         const user: User = users.filter(handleFilteruserById)[0];
+
+        return user;
+    }
+
+    public updateUserMockAttribute(user: User, userUpdated: User): User {
+        user.firstName = userUpdated.firstName ? userUpdated.firstName : user.firstName;
+        user.lastName = userUpdated.lastName ? userUpdated.lastName: user.lastName;
 
         return user;
     }
