@@ -1,8 +1,8 @@
 import { User } from '../../entities/users/User';
-import { UserManger, UserMangerImp } from '../../entities/users/UserManger';
+import { UserEntity, UserEntityFromMockImp } from '../../entities/users/UserEntity';
 
 interface UsersCreator {
-    userManger: UserManger;
+    userEntity: UserEntity;
     createUser(user: any): Promise<User[]>;
     updateUser(id: String, user: any): Promise<User[]>;
     deleteUser(id: String): Promise<User[]>;
@@ -11,28 +11,32 @@ interface UsersCreator {
 
 class UsersCreatorImp {
     private static instance: UsersCreator;
-    userManger: UserManger = UserMangerImp.getInstance();
+    userEntity: UserEntity;
+
+    private constructor(userEntity: UserEntity) {
+        this.userEntity = userEntity;
+    }
 
     public static getInstance(): UsersCreator {
         if (!UsersCreatorImp.instance) {
-            UsersCreatorImp.instance = new UsersCreatorImp();
+            UsersCreatorImp.instance = new UsersCreatorImp(new UserEntityFromMockImp());
         }
 
         return UsersCreatorImp.instance;
     }
 
     public async createUser(user: any): Promise<User[]> {
-        const users: User[] = this.userManger.createUserToMock(user);
+        const users: User[] = this.userEntity.createUser(user);
         return users;
     }
 
     public async updateUser(id: String, user: any): Promise<User[]> {
-        const users: User[] = this.userManger.updateByidFromMock(id, user);
+        const users: User[] = this.userEntity.updateByid(id, user);
         return users;
     }
 
     public async deleteUser(id: String): Promise<User[]> {
-        const users: User[] = this.userManger.deleteByidFromMock(id);
+        const users: User[] = this.userEntity.deleteByid(id);
         return users;
     }
 }
@@ -41,6 +45,5 @@ const usersCreator: UsersCreator = UsersCreatorImp.getInstance();
 
 export {
     UsersCreator,
-    UsersCreatorImp,
     usersCreator
 }

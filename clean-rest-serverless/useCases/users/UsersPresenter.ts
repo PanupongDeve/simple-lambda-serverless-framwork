@@ -1,8 +1,8 @@
 import { User } from '../../entities/users/User';
-import { UserManger, UserMangerImp } from '../../entities/users/UserManger';
+import { UserEntity, UserEntityFromMockImp } from '../../entities/users/UserEntity';
 
 interface UsersPresenter {
-    userManger: UserManger;
+    userEntity: UserEntity;
     getUsers(): Promise<User[]>;
     getUserById(id: String): Promise<User>;
 
@@ -10,11 +10,15 @@ interface UsersPresenter {
 
 class UsersPresenterImp implements UsersPresenter {
     private static instance: UsersPresenter;
-    userManger: UserManger = UserMangerImp.getInstance();
+    userEntity: UserEntity;
+
+    private constructor(userEntity: UserEntity) {
+        this.userEntity = userEntity;
+    }
 
     public static getInstance(): UsersPresenter {
         if (!UsersPresenterImp.instance) {
-            UsersPresenterImp.instance = new UsersPresenterImp();
+            UsersPresenterImp.instance = new UsersPresenterImp(new UserEntityFromMockImp());
         }
 
         return UsersPresenterImp.instance;
@@ -22,13 +26,13 @@ class UsersPresenterImp implements UsersPresenter {
 
     public async getUsers(): Promise<User[]> {
 
-        const users: User[] = this.userManger.getUsersFromMock();
+        const users: User[] = this.userEntity.getUsers();
 
         return users;
     }
 
     public async getUserById(id: String): Promise<User> {
-        const user: User = this.userManger.getUserByIdFromMock(id);
+        const user: User = this.userEntity.getUserById(id);
 
         return user;
     }
@@ -38,6 +42,5 @@ const usersPresenter: UsersPresenter = UsersPresenterImp.getInstance();
 
 export {
     UsersPresenter,
-    UsersPresenterImp,
     usersPresenter
 }
