@@ -1,6 +1,6 @@
-import { User } from '../entities/users/User';
-import { usersPresenter } from '../useCases/users/UsersPresenter';
-import { usersCreator } from '../useCases/users/UsersCreator';
+import { User } from '../core/entities/users/User';
+import { usersPresenter } from '../core/useCases/users/UsersPresenter';
+import { usersCreator } from '../core/useCases/users/UsersCreator';
 
 class UserController {
     private static instance: UserController;
