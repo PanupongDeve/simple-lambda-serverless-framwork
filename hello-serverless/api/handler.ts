@@ -1,14 +1,17 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
-import * as serverless from 'serverless-http';
-import * as express from 'express';
 import 'source-map-support/register';
 
-const app = express();
-
-app.get('/api', function (req, res) {
-  res.send('Hello World!')
-})
 
 
+const output = {
+  message: 'hello serverless'
+}
 
-export const hello:APIGatewayProxyHandler = serverless(app);
+
+
+export const hello:APIGatewayProxyHandler = async (event, _context) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify(output, null, 2),
+  };
+}
