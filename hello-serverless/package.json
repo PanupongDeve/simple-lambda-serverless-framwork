@@ -8,7 +8,7 @@
     "offline": "sls offline"
   },
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "serverless-http": "^2.5.0",
     "source-map-support": "^0.5.10"
   },
